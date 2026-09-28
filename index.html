@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="description" content="A simple Zoom-ready virtual board for the Story Spine collaborative storytelling game.">
+  <title>Story Spine — Virtual Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Collaborative storytelling game</p>
+      <h1>Story Spine</h1>
+    </div>
+    <div class="top-actions">
+      <button id="readStoryBtn" class="button ghost" type="button">Read story aloud</button>
+      <button id="undoBtn" class="button ghost" type="button">Undo</button>
+      <button id="newGameBtn" class="button danger" type="button">New game</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="main-column">
+      <div id="setupPanel" class="panel">
+        <p class="step-label">Setup</p>
+        <h2>Start a game</h2>
+        <p class="muted">One person hosts this page and shares their screen on Zoom. Players give their contributions aloud or in chat.</p>
+
+        <form id="setupForm">
+          <label for="playersInput">Player names <span>3–6, separated by commas or new lines</span></label>
+          <textarea id="playersInput" rows="4" placeholder="Maya, Jordan, Alex, Sam" required></textarea>
+
+          <div class="form-grid">
+            <label for="turnLimitInput">Round 2 turn limit
+              <input id="turnLimitInput" type="number" min="6" max="30" value="12">
+            </label>
+            <label class="check-row" for="scoringInput">
+              <input id="scoringInput" type="checkbox">
+              Use optional scoring
+            </label>
+          </div>
+
+          <button class="button primary" type="submit">Begin Round 1</button>
+          <p id="setupError" class="error" role="alert"></p>
+        </form>
+      </div>
+
+      <div id="gamePanel" class="panel hidden">
+        <div class="phase-header">
+          <div>
+            <p id="phaseLabel" class="step-label"></p>
+            <h2 id="turnHeading"></h2>
+          </div>
+          <span id="turnCounter" class="pill"></span>
+        </div>
+
+        <div id="round1Controls" class="controls hidden">
+          <div class="prompt-box">
+            <p id="beatName" class="card-kicker"></p>
+            <p id="beatDescription"></p>
+          </div>
+          <form id="round1Form">
+            <label for="round1Sentence">Add one complete sentence</label>
+            <textarea id="round1Sentence" rows="4" required></textarea>
+            <button class="button primary" type="submit">Add to story</button>
+          </form>
+        </div>
+
+        <div id="round2Controls" class="controls hidden">
+          <div id="rollArea" class="roll-area">
+            <div class="die" id="dieFace" aria-label="Die has not been rolled">?</div>
+            <div>
+              <p id="deckName" class="card-kicker">Ready to roll</p>
+              <p id="cardText" class="card-text">The die chooses the story beat and virtual deck.</p>
+            </div>
+          </div>
+
+          <button id="rollBtn" class="button primary large" type="button">Roll die &amp; draw card</button>
+
+          <form id="editForm" class="hidden">
+            <label for="sentenceSelect">Sentence to rewrite</label>
+            <select id="sentenceSelect"></select>
+
+            <label for="editSentence">Replacement sentence</label>
+            <textarea id="editSentence" rows="4" required></textarea>
+            <p class="hint">Use the word or phrase shown above. Grammatical forms may change.</p>
+
+            <label id="rippleToggleRow" class="check-row" for="rippleToggle">
+              <input id="rippleToggle" type="checkbox">
+              Make one small continuity edit to the next sentence
+            </label>
+            <div id="rippleFields" class="hidden">
+              <p id="rippleLabel" class="hint"></p>
+              <textarea id="rippleSentence" rows="3"></textarea>
+            </div>
+
+            <div class="button-row">
+              <button class="button primary" type="submit">Save rewrite</button>
+              <button id="redrawBtn" class="button ghost" type="button">Use redraw</button>
+            </div>
+          </form>
+
+          <div id="judgmentPanel" class="judgment hidden">
+            <h3>Group decision</h3>
+            <p>Does the rewrite make sense without causing an unrepairable story break?</p>
+            <div class="button-row">
+              <button id="makesSenseBtn" class="button success" type="button">Makes sense (+1)</button>
+              <button id="storyBreakBtn" class="button danger" type="button">Story break (−1)</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="finishedControls" class="controls hidden">
+          <div class="finish-banner">
+            <p class="step-label">Game complete</p>
+            <h2>The transformed story is ready.</h2>
+            <p id="finishReason"></p>
+          </div>
+          <button id="exportBtn" class="button primary" type="button">Export game record</button>
+        </div>
+      </div>
+
+      <section class="panel story-panel">
+        <div class="section-heading">
+          <div>
+            <p class="step-label">Live transcript</p>
+            <h2>The story</h2>
+          </div>
+          <span id="storyProgress" class="pill">0 / 9 beats</span>
+        </div>
+        <ol id="storyList" class="story-list"></ol>
+        <p id="emptyStory" class="empty-state">The story will appear here as players build it.</p>
+      </section>
+    </section>
+
+    <aside class="side-column">
+      <section class="panel">
+        <p class="step-label">Players</p>
+        <div id="playersList" class="players-list">
+          <p class="empty-state">Add players to begin.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <p class="step-label">Deck coverage</p>
+        <div id="deckTracker" class="deck-tracker"></div>
+      </section>
+
+      <details class="panel rules-panel">
+        <summary>Quick rules</summary>
+        <ol>
+          <li>Round 1: build the nine Story Spine beats in order.</li>
+          <li>Round 2: roll 1–6, draw a generated card, and rewrite the matching beat.</li>
+          <li>One small follow-up edit to the next sentence is allowed for continuity.</li>
+          <li>The game ends when all six decks appear or the turn limit is reached.</li>
+        </ol>
+      </details>
+
+      <details class="panel audit-panel">
+        <summary>Game log</summary>
+        <ol id="auditList" class="audit-list"></ol>
+      </details>
+
+      <section class="panel save-panel">
+        <p class="step-label">Backup</p>
+        <p class="muted small">Progress saves automatically in this browser.</p>
+        <div class="button-stack">
+          <button id="saveBtn" class="button ghost" type="button">Download save</button>
+          <label class="button ghost file-button" for="loadInput">Load save</label>
+          <input id="loadInput" type="file" accept="application/json,.json">
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
