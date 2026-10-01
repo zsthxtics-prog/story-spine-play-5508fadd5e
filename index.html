@@ -13,7 +13,7 @@
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Collaborative storytelling game</p>
+      <p class="eyebrow">Virtual card table</p>
       <h1>Story Spine</h1>
     </div>
     <div class="top-actions">
@@ -49,7 +49,7 @@
         </form>
       </div>
 
-      <div id="gamePanel" class="panel hidden">
+      <div id="gamePanel" class="panel table-panel hidden">
         <div class="phase-header">
           <div>
             <p id="phaseLabel" class="step-label"></p>
@@ -58,12 +58,19 @@
           <span id="turnCounter" class="pill"></span>
         </div>
 
+        <div class="table-mark" aria-hidden="true"><span>STORY</span><i></i><span>SPINE</span></div>
+
         <div id="round1Controls" class="controls hidden">
-          <div class="prompt-box">
-            <p id="beatName" class="card-kicker"></p>
-            <p id="beatDescription"></p>
+          <div id="round1Card" class="story-card round1-card deck-1">
+            <span class="card-corner top">01 · BEGINNING</span>
+            <div class="card-orbit" aria-hidden="true"></div>
+            <div class="card-message">
+              <p id="beatName" class="card-kicker"></p>
+              <p id="beatDescription"></p>
+            </div>
+            <span class="card-brand">STORY SPINE</span>
           </div>
-          <form id="round1Form">
+          <form id="round1Form" class="action-sheet">
             <label for="round1Sentence">Add one complete sentence</label>
             <textarea id="round1Sentence" rows="4" required></textarea>
             <button class="button primary" type="submit">Add to story</button>
@@ -72,16 +79,25 @@
 
         <div id="round2Controls" class="controls hidden">
           <div id="rollArea" class="roll-area">
-            <div class="die" id="dieFace" aria-label="Die has not been rolled">?</div>
-            <div>
-              <p id="deckName" class="card-kicker">Ready to roll</p>
-              <p id="cardText" class="card-text">The die chooses the story beat and virtual deck.</p>
+            <div class="dice-station">
+              <span class="station-label">Story die</span>
+              <div class="die" id="dieFace" aria-label="Die has not been rolled">?</div>
+              <span id="dieNumber" class="die-number">D6</span>
+            </div>
+            <div id="virtualCard" class="story-card drawn-card card-idle">
+              <span id="cardNumber" class="card-corner top">DRAW</span>
+              <div class="card-orbit" aria-hidden="true"></div>
+              <div class="card-message">
+                <p id="deckName" class="card-kicker">Ready to roll</p>
+                <p id="cardText" class="card-text">The die chooses the story beat and virtual deck.</p>
+              </div>
+              <span class="card-brand">STORY SPINE</span>
             </div>
           </div>
 
           <button id="rollBtn" class="button primary large" type="button">Roll die &amp; draw card</button>
 
-          <form id="editForm" class="hidden">
+          <form id="editForm" class="action-sheet hidden">
             <label for="sentenceSelect">Sentence to rewrite</label>
             <select id="sentenceSelect"></select>
 
@@ -127,7 +143,7 @@
       <section class="panel story-panel">
         <div class="section-heading">
           <div>
-            <p class="step-label">Live transcript</p>
+            <p class="step-label">The Scribe's notebook</p>
             <h2>The story</h2>
           </div>
           <span id="storyProgress" class="pill">0 / 9 beats</span>

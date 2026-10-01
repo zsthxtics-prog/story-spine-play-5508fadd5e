@@ -275,6 +275,8 @@ function render() {
     els.turnCounter.textContent = `Beat ${state.round1Index + 1} of ${BEATS.length}`;
     els.beatName.textContent = `${beat.name} · ${beat.id}`;
     els.beatDescription.textContent = beat.description;
+    els.round1Card.className = `story-card round1-card deck-${beat.deck}`;
+    els.round1Card.querySelector(".card-corner").textContent = `${String(beat.deck).padStart(2, "0")} · ${DECKS[beat.deck].name}`;
     els.round1Sentence.placeholder = `${player.name}, add the ${beat.name} sentence…`;
   }
 
@@ -289,8 +291,11 @@ function render() {
 
     if (state.currentDraw) {
       const { roll, card } = state.currentDraw;
-      els.dieFace.textContent = roll;
+      els.dieFace.textContent = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"][roll - 1];
+      els.dieNumber.textContent = String(roll);
       els.dieFace.setAttribute("aria-label", `Die rolled ${roll}`);
+      els.virtualCard.className = `story-card drawn-card revealed deck-${roll}`;
+      els.cardNumber.textContent = `${String(roll).padStart(2, "0")} · ${DECKS[roll].name}`;
       els.deckName.textContent = `${DECKS[roll].name} deck`;
       els.cardText.textContent = card;
       const ids = eligibleIds(roll);
@@ -302,7 +307,10 @@ function render() {
       els.redrawBtn.textContent = player.redraws > 0 ? "Use redraw" : "Redraw used";
     } else {
       els.dieFace.textContent = "?";
+      els.dieNumber.textContent = "D6";
       els.dieFace.setAttribute("aria-label", "Die has not been rolled");
+      els.virtualCard.className = "story-card drawn-card card-idle";
+      els.cardNumber.textContent = "DRAW";
       els.deckName.textContent = state.awaitingJudgment ? "Rewrite saved" : "Ready to roll";
       els.cardText.textContent = state.awaitingJudgment ? "The group decides whether the edit holds together." : "The die chooses the story beat and virtual deck.";
     }
@@ -366,8 +374,8 @@ function renderPlayers() {
 function renderDecks() {
   els.deckTracker.replaceChildren(...Object.entries(DECKS).map(([number, deck]) => {
     const chip = document.createElement("div");
-    chip.className = `deck-chip${state.seenDecks.includes(Number(number)) ? " seen" : ""}`;
-    chip.innerHTML = `<span class="deck-number">${number}</span>${deck.name}`;
+    chip.className = `deck-chip deck-${number}${state.seenDecks.includes(Number(number)) ? " seen" : ""}`;
+    chip.innerHTML = `<span class="deck-number">0${number}</span><span class="deck-name">${deck.name}</span><span class="deck-status">${state.seenDecks.includes(Number(number)) ? "DRAWN" : "IN PLAY"}</span>`;
     return chip;
   }));
 }
