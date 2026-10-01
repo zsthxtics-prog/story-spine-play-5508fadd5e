@@ -276,7 +276,6 @@ function render() {
     els.beatName.textContent = `${beat.name} · ${beat.id}`;
     els.beatDescription.textContent = beat.description;
     els.round1Card.className = `story-card round1-card deck-${beat.deck}`;
-    els.round1Card.querySelector(".card-corner").textContent = `${String(beat.deck).padStart(2, "0")} · ${DECKS[beat.deck].name}`;
     els.round1Sentence.placeholder = `${player.name}, add the ${beat.name} sentence…`;
   }
 

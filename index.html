@@ -62,15 +62,13 @@
 
         <div id="round1Controls" class="controls hidden">
           <div id="round1Card" class="story-card round1-card deck-1">
-            <span class="card-corner top">01 · BEGINNING</span>
-            <div class="card-orbit" aria-hidden="true"></div>
-            <div class="card-message">
+            <span class="visually-hidden">Story Spine deck card</span>
+          </div>
+          <form id="round1Form" class="action-sheet">
+            <div class="round-prompt-copy">
               <p id="beatName" class="card-kicker"></p>
               <p id="beatDescription"></p>
             </div>
-            <span class="card-brand">STORY SPINE</span>
-          </div>
-          <form id="round1Form" class="action-sheet">
             <label for="round1Sentence">Add one complete sentence</label>
             <textarea id="round1Sentence" rows="4" required></textarea>
             <button class="button primary" type="submit">Add to story</button>
