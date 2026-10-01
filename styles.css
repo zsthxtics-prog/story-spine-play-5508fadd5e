@@ -418,7 +418,7 @@ details ol { padding-left: 20px; margin-bottom: 0; }
   aspect-ratio: 621 / 875;
   padding: 0;
   background-color: transparent;
-  background-image: url("assets/story-spine-card-fronts.png");
+  background-image: url("assets/story-spine-card-fronts.png?v=original-20261001-1");
   background-repeat: no-repeat;
   background-size: 347.67% 211.66%;
   background-position: var(--sprite-x-front, 50%) var(--sprite-y-front, 97.54%);
@@ -435,7 +435,7 @@ details ol { padding-left: 20px; margin-bottom: 0; }
 
 .round1-card {
   width: min(100%, 310px);
-  background-image: url("assets/story-spine-card-backs.png");
+  background-image: url("assets/story-spine-card-backs.png?v=original-20261001-1");
   background-size: 328.28% 207.84%;
   background-position: var(--sprite-x-back, 49.97%) var(--sprite-y-back, 97.75%);
 }
@@ -467,7 +467,7 @@ details ol { padding-left: 20px; margin-bottom: 0; }
 .drawn-card .card-text { font-size: clamp(1.28rem, 3vw, 1.9rem); line-height: 1.2; }
 
 .card-idle {
-  background-image: url("assets/story-spine-card-backs.png");
+  background-image: url("assets/story-spine-card-backs.png?v=original-20261001-1");
   background-size: 328.28% 207.84%;
   background-position: 49.97% 97.75%;
 }
@@ -479,7 +479,7 @@ details ol { padding-left: 20px; margin-bottom: 0; }
   display: block;
   padding: 0;
   background-color: transparent;
-  background-image: url("assets/story-spine-card-backs.png");
+  background-image: url("assets/story-spine-card-backs.png?v=original-20261001-1");
   background-repeat: no-repeat;
   background-size: 328.28% 207.84%;
   background-position: var(--sprite-x-back) var(--sprite-y-back);
